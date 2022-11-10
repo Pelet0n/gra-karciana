@@ -2,6 +2,7 @@ let images = ['karta2.png','karta3.png','karta4.png','karta5.png','karta6.png','
 let picks = []
 let cards_number
 let block = false
+let randoms = 0
 
 function endgame(){
     
@@ -29,7 +30,7 @@ $("button").on('click',()=>{
 
     let remove = []
     for(let i=0;i<cards_number;i++){
-        if(images.length == 0){
+        if(randoms == cards_number/2){
             images = remove
             remove = []
         }
@@ -43,7 +44,7 @@ $("button").on('click',()=>{
             
         }
         gameboard.append('<div id="card'+i+'" class="card"/>')
-        $(`#card${i}`).on('click',()=>{
+        $(`#card${i}`).click(()=>{
             if(!block){
                 $(`#card${i}`).removeClass('card').addClass('cardA').css('background-image','url("images/'+image+'")')
                 engine(i)
@@ -76,13 +77,12 @@ function engine(nr){
        
         setTimeout(()=>{
             if(picks[nr].image == picks[clicked_number].image){
-                $(`#card${nr}`).css('opacity',0)
-                $(`#card${clicked_number}`).css('opacity',0)
+                $(`#card${nr}`).remove()
+                $(`#card${clicked_number}`).remove()
                 turns += 1
                 good += 1
                 $('p').html("Liczba tur " + turns)
                 block = false
-                picks[nr].blocked, picks[clicked_number].blocked = true
             }
             else{
                 $(`#card${nr}`).css('background-image','').addClass('card')
@@ -92,17 +92,20 @@ function engine(nr){
                 block = false
             }
             
-        },1000)
+        },1000) 
+
+        
 
         if(good == cards_number / 2){
+            console.log(good)
             $('.gameboard').remove()
             picks = []
             $('.container').append('<div class="endgame"></div>')
             $('.endgame').html('<p>KONIEC GRY</p>')
             $('.endgame').append('<button>Restart game!</button>')
+            }
+            
         }
-        
-    }
    
    
 }
@@ -113,6 +116,7 @@ function random_word(){
     const number = Math.floor(Math.random()*images.length)
     const image = images[number]
     images.splice(number,1)
+    randoms += 1
     return image
 }
 
