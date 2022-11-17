@@ -3,12 +3,27 @@ let picks = []
 let cards_number
 let block = false
 let randoms = 0
+let pause = 4
 
 function endgame(){
-    
+    playsound("sounds/mixkit-arcade-game-complete-or-approved-mission-205.wav")
+    $('.gameboard').remove()
+    $('.container').append('<div class="endgame"></div>')
+    $('.endgame').html('<p>KONIEC GRY</p>')
+    $('.endgame').append('<button onClick="window.location.reload()">Restart game!</button>')
+}
+
+function playsound(sound,volume=0.5,loop=false){
+    const music = new Audio(sound)
+    console.log(loop)
+    music.volume = volume
+    music.play()
+    music.loop = loop
 }
 
 $("button").on('click',()=>{
+    playsound("sounds/mixkit-game-level-music-689.wav",0.5,true)
+
     $("button").remove()
 
     const level = $('#poziom').val()
@@ -22,7 +37,8 @@ $("button").on('click',()=>{
         cards_number = 12
     }
     else if(level=='trudny'){
-        cards_number = 16
+        cards_number = 18
+        pause = 6
     }
 
     $('.container').append('<div class="gameboard"/>')
@@ -39,18 +55,19 @@ $("button").on('click',()=>{
         
         picks.push({"nr":i,"image":image})
 
-        if(i % 4 == 0){
+        if(i % pause == 0){
             gameboard.append('<div style="clear:both" />')
             
         }
         gameboard.append('<div id="card'+i+'" class="card"/>')
-        $(`#card${i}`).click(()=>{
-            if(!block){
-                $(`#card${i}`).removeClass('card').addClass('cardA').css('background-image','url("images/'+image+'")')
-                engine(i)
-            }
-           
-        })
+            $(`#card${i}`).click(()=>{
+                    if(!block){
+                        $(`#card${i}`).removeClass('card').addClass('cardA').css('background-image','url("images/'+image+'")')
+                        engine(i)
+                        
+                    }    
+            
+            })
     }
     
 })
@@ -62,6 +79,10 @@ let clicked_number
 let good = 0
 
 function engine(nr){
+    playsound("sounds/mixkit-arcade-retro-changing-tab-206.wav",volume=0.9)
+    if($(`#card${nr}`).css('opacity')==0){
+        return 0
+    }
 
     if(clicks==0){
         clicked_number = nr
@@ -77,8 +98,8 @@ function engine(nr){
        
         setTimeout(()=>{
             if(picks[nr].image == picks[clicked_number].image){
-                $(`#card${nr}`).remove()
-                $(`#card${clicked_number}`).remove()
+                $(`#card${nr}`).animate({opacity:'0'},200).addClass('cardH')
+                $(`#card${clicked_number}`).animate({opacity:'0'},200).addClass('cardH')
                 turns += 1
                 good += 1
                 $('p').html("Liczba tur " + turns)
@@ -91,20 +112,13 @@ function engine(nr){
                 $('p').html("Liczba tur " + turns)
                 block = false
             }
+
+            if(good == cards_number / 2 ){
+                endgame()    
+                }
             
         },1000) 
 
-        
-
-        if(good == cards_number / 2){
-            console.log(good)
-            $('.gameboard').remove()
-            picks = []
-            $('.container').append('<div class="endgame"></div>')
-            $('.endgame').html('<p>KONIEC GRY</p>')
-            $('.endgame').append('<button>Restart game!</button>')
-            }
-            
         }
    
    
