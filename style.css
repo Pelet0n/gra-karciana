@@ -1,20 +1,71 @@
-.card{
-    width: 200px;
-    height: 250px;
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body{
+    background-color: #0f0f0b;
+    font-family: 'Roboto', sans-serif;
+    color:#ccb73f;
+}
+
+header{
+    text-align: center;
+    font-size: 30px;
+    height: 70px;
+    
+}
+
+.card, .cardA, .cardH{
+    width: 130px;
+    height: 170px;
     float: left;
-    background-image: url('karta.png');
+    background-image: url('images/back.jpg');
     cursor: pointer;
     margin: 10px;
+    position:relative;
+    left:15%;
 }
 
 
 
-.cardA{
-    width: 200px;
-    height: 250px;
+.cardA, .cardH{
+    transition: 500ms;
+}
+
+.cardH{
+    cursor:auto;
+}
+
+.gameboard{
+    position: relative;
+    left: 10%;
+    width: 1200px;
+    height: 800px;
+    padding: 10px;
+}
+.container{
+    text-align: center;
+    height: 500px;
+}
+
+.starter{
+    text-align: center;
+}
+
+
+select{
+    width: 100px;
+
+}
+
+button{
+    width: 250px;
+    height: 50px;
+    border-radius:10px;
+    background-color: #23c43e;
+    border: none;
     cursor: pointer;
-    margin: 10px;
-    float: left;
-    transition: 600ms;
-   
+    transition: 500ms;
+}
+
+button:hover{
+    background-color: #11a21d;
 }
